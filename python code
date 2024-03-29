@@ -1,0 +1,22 @@
+import cv2
+import numpy as np
+
+# Read the image
+image = cv2.imread('your_image.jpg')
+gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+# Detect circles using Hough Transform
+circles = cv2.HoughCircles(gray, cv2.HOUGH_GRADIENT, dp=1, minDist=20,
+                           param1=50, param2=30, minRadius=0, maxRadius=0)
+
+# If circles are found, draw them
+if circles is not None:
+    circles = np.round(circles[0, :]).astype("int")
+    for (x, y, r) in circles:
+        cv2.circle(image, (x, y), r, (0, 255, 0), 4)
+
+    cv2.imshow("Detected Circles", image)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+else:
+    print("No circles detected.")
